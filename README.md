@@ -43,7 +43,7 @@ vm_map             = {"pod1":{"private_ip_address":"10.0.2.21"},"pod2":{"private
 ```
 output
 ```shell
-az_resource_group = "my-az-resource-group"
+az_resource_group = "your-az-resource-group"
 az_subscription_id = "your-az-subscription-guid-value"
 hostnames = [
   "azure-tf-vms-pod1.westus2.cloudapp.azure.com",
