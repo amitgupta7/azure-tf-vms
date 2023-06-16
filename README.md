@@ -1,4 +1,6 @@
 # azure-tf-vms
+## What is this
+This is a quick terraform script to help you setup azure VM(s) in a single VPC/Subnet with public hostnames. The script supports creating multiple VMs using a vm_map cli argument. At the moment, the vm_map requires a name and a private-ip-address within subnet cidr `10.0.2.0/24`. 
 ## Prerequisites
 ```shell 
 ## install terraform
