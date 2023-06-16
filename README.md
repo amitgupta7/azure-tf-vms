@@ -33,10 +33,20 @@ tfa
 ## create a 3 node cluster
 $> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}, "pod2":{"private_ip_address":"10.0.2.22"}, "pod3":{"private_ip_address":"10.0.2.23"}}'
 ```
-Alternatively create a `terraform.tfvars` file to override the variables. e.g.
+Alternatively create a `terraform.tfvars` file to override the variables like location and vm_map. e.g.
 ```hcl
 az_subscription_id = "azure-subscription-guid"
 az_resource_group  = "existing-resource-group"
 azpwd              = "strongPwd"
+location           = "eastus2"
 vm_map             = {"pod1":{"private_ip_address":"10.0.2.21"},"pod2":{"private_ip_address":"10.0.2.22"}, "pod3":{"private_ip_address":"10.0.2.23"}}
+```
+output
+```shell
+az_resource_group = "my-az-resource-group"
+az_subscription_id = "your-az-subscription-guid-value"
+hostnames = [
+  "azure-tf-vms-pod1.westus2.cloudapp.azure.com",
+]
+ssh_credentials = "azuser/yourStringPasswordHere"
 ```
