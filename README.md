@@ -8,7 +8,8 @@ $> tf init
 ## provision infra for pods
 ## provide EXISTING resource group name, azure subscription-id and vm-password on prompt
 $> tfaa 
-## de-provision 
-## provide EXISTING resource group name, azure subscription-id and vm-password on prompt (as above)
+## to de-provision provide EXISTING resource group name, 
+## azure subscription-id and vm-password on prompt 
+## EXACTLY SAME VALUES AS PROVIDED DURING PROVISIONING
 $> tfda
 ```
