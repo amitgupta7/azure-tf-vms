@@ -1,5 +1,5 @@
 # azure-tf-vms
-Prerequisites
+## Prerequisites
 ```shell 
 ## install terraform
 ## install az cli
@@ -7,7 +7,7 @@ $> az login
 ## az group create 
 ```
 
-To use the tfscript
+## To use the tfscript
 ```shell
 $> git clone https://github.com/amitgupta7/azure-tf-vms.git
 $> cd azure-tf-vms
@@ -21,7 +21,8 @@ $> tfaa
 ## EXACTLY SAME VALUES AS PROVIDED DURING PROVISIONING
 $> tfda
 ```
-Default creates two pod nodes. To override pass the vm map in cli
+## Don't need two VMs
+Default creates two vm nodes. To override pass the vm map in cli
 ```shell
 ## creaet a single node cluster
 $> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}}'
