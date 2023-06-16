@@ -1,11 +1,11 @@
 # azure-tf-vms
 Prerequisites
-<code> 
+```shell 
 ## install terraform
 ## install az cli
 $> az login
 ## az group create 
-</code>
+```
 
 To use the tfscript
 ```shell
