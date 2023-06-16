@@ -24,12 +24,12 @@ $> tfaa
 $> tfda
 ```
 ## Don't need two VMs (or change other settings)?
-Default creates two vm nodes. To override pass the vm map in cli
+Default creates two vm nodes. To override pass the vm map in cli. Other Variables are defined in var.tf file, and can be overridden using cli input or tfvar file. E.g. 
 ```shell
 ## creaet a single node cluster
 $> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}}'
-## creaet a two node cluster (default)
-tfa
+## creaet a two node cluster (default) in eastus2 (instead of default westus2)
+tfa -var=location=eastus2
 ## create a 3 node cluster
 $> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}, "pod2":{"private_ip_address":"10.0.2.22"}, "pod3":{"private_ip_address":"10.0.2.23"}}'
 ```
