@@ -45,7 +45,8 @@ azpwd              = "strongPwd"
 location           = "eastus2"
 vm_map             = {"pod1":{"private_ip_address":"10.0.2.21"},"pod2":{"private_ip_address":"10.0.2.22"}, "pod3":{"private_ip_address":"10.0.2.23"}}
 ```
-## Output (please save)
+## Output (IMPORTANT: please save)
+NOTE: The script will output the hostnames and mandatory parameters (for delete).
 ```shell
 az_resource_group = "your-az-resource-group"
 az_subscription_id = "your-az-subscription-guid-value"
