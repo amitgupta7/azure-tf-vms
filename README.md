@@ -24,7 +24,7 @@ $> tfda
 Default creates two pod nodes. To override pass the vm map in cli
 ```shell
 ## creaet a single node cluster
-tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}}'
+$> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}}'
 ## creaet a two node cluster (default)
 tfa
 ## create a 3 node cluster
