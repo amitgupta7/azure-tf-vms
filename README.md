@@ -41,12 +41,14 @@ azpwd              = "strongPwd"
 location           = "eastus2"
 vm_map             = {"pod1":{"private_ip_address":"10.0.2.21"},"pod2":{"private_ip_address":"10.0.2.22"}, "pod3":{"private_ip_address":"10.0.2.23"}}
 ```
-output
+output (please save)
 ```shell
 az_resource_group = "your-az-resource-group"
 az_subscription_id = "your-az-subscription-guid-value"
 hostnames = [
-  "azure-tf-vms-pod1.westus2.cloudapp.azure.com",
+  "azure-tf-vms-pod1.eastus2.cloudapp.azure.com",
+  "azure-tf-vms-pod2.eastus2.cloudapp.azure.com",
+  "azure-tf-vms-pod3.eastus2.cloudapp.azure.com"
 ]
 ssh_credentials = "azuser/yourStringPasswordHere"
 ```
