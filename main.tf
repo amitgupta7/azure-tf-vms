@@ -6,3 +6,9 @@ terraform {
     }
   }
 }
+
+provider "az" {
+  subscription_id = var.az_subscription_id
+  skip_provider_registration = true
+}
+
