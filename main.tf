@@ -103,6 +103,14 @@ output "hostnames" {
   value = values(azurerm_public_ip.pod_ip).*.fqdn
 }
 
+output "az_subscription_id" {
+  value = var.az_subscription_id
+}
+
+output "az_resource_group" {
+  value = var.az_resource_group
+}
+
 output "ssh_credentials" {
   value = "${var.azuser}/${var.azpwd}"
 }
