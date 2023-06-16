@@ -12,7 +12,7 @@ variable "azuser" {
 }
 
 variable "azpwd" {
-  description = "azure vm password, common for all machines"
+  description = "common vm password, 16 characters containg --> [chars-alpha-num-special-char]"
 }
 
 variable "vm_size" {
