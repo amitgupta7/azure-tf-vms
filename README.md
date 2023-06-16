@@ -23,7 +23,7 @@ $> tfaa
 ## EXACTLY SAME VALUES AS PROVIDED DURING PROVISIONING
 $> tfda
 ```
-## Don't need two VMs
+## Don't need two VMs (or change other settings)?
 Default creates two vm nodes. To override pass the vm map in cli
 ```shell
 ## creaet a single node cluster
