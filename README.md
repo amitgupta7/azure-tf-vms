@@ -1,6 +1,6 @@
 # azure-tf-vms
 Prerequisites
-<code language="shell"> 
+<code> 
 ## install terraform
 ## install az cli
 $> az login
