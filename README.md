@@ -25,11 +25,11 @@ $> tfaa
 $> tfda
 ```
 ## Don't need two VMs (or change other settings)?
-Default creates two vm nodes. To override pass the vm map in cli. Other Variables are defined in var.tf file, and can be overridden using cli input or tfvar file.
+The default script will setup two ubuntu nodes with `10.0.2.21` and `10.0.2.22` private_ip_address in `westus2` azure region, running `ubuntu server 20.04 lts` os version. The default machine size is `Standard_D32s_v3` or the recomended 32 vcores - 128gb ram that securiti.ai recommends for `plus` workloads. 
 
-Note: other vriables like vm os, os disk size, vm-size, subnet cidr etc can be specified as cli input. see `var.tf` file for details.
+The script will prompt for an existing `az_subscription_id`, `az_resource_group` and a strong password (`16 chars alpha-num-special-caps`) as `REQUIRED USER INPUT` to provision the resources. 
 
-E.g. the default will setup two ubuntu nodes with `10.0.2.21` and `10.0.2.22` private_ip_address in `westus2` azure region, running `ubuntu server 20.04 lts` os version. The default machine size is `Standard_D32s_v3` or the recomended 32 vcores - 128gb ram that securiti.ai recommends for `plus` workloads. 
+Note: The `REQUIRED USER INPUT` and other variables like vm os, os disk size, vm-size, subnet cidr etc can also be specified as cli input or local `.tfvars` file. see `var.tf` file for detailed list of variables (and default values) that can be dynamically specified to the script.
 ```shell
 ## create a single node cluster
 $> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}}'
