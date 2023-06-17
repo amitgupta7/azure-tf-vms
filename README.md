@@ -50,8 +50,9 @@ Alternatively create a `terraform.tfvars` file to override the variables like lo
 az_subscription_id = "azure-subscription-guid"
 az_resource_group  = "existing-resource-group"
 vm_size            = "Standard_D8s_v3"
-os_offer           = "0001-com-ubuntu-server-jammy"
-os_sku             = "22_04-lts-gen2"
+os_publisher       = "RedHat"
+os_offer           = "RHEL"
+os_sku             = "87-gen2"
 azpwd              = "strongPwd"
 location           = "eastus2"
 vm_map             = {"pod1":{"private_ip_address":"10.0.2.21"},"pod2":{"private_ip_address":"10.0.2.22"}, "pod3":{"private_ip_address":"10.0.2.23"}}
