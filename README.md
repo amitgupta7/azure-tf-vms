@@ -67,5 +67,5 @@ hostnames = [
   "azure-tf-vms-pod2.eastus2.cloudapp.azure.com",
   "azure-tf-vms-pod3.eastus2.cloudapp.azure.com"
 ]
-ssh_credentials = "azuser/yourStringPasswordHere"
+ssh_credentials = "azuser/yourPasswordStringHere"
 ```
