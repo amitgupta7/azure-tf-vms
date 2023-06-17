@@ -85,7 +85,7 @@ resource "azurerm_linux_virtual_machine" "podvms" {
     name                 = "${var.az_name_prefix}-${each.key}-os-disk"
     disk_size_gb         = var.os_disk_size_in_gb
     caching              = "ReadWrite"
-    storage_account_type = "StandardSSD_LRS"
+    storage_account_type = "Premium_LRS"
   }
   source_image_reference {
     publisher = var.os_publisher
