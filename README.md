@@ -10,7 +10,7 @@ $> az login
 ```
 
 ## To use the tfscript
-Clone `main` branch. Alternatively use [released packages](https://github.com/amitgupta7/azure-tf-vms/tags)
+Clone `main` branch. Alternatively use [released packages](https://github.com/amitgupta7/azure-tf-vms/releases)
 ```shell
 $> git clone https://github.com/amitgupta7/azure-tf-vms.git
 $> cd azure-tf-vms
