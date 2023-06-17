@@ -29,11 +29,11 @@ variable "os_publisher" {
 }
 
 variable "os_offer" {
-  default = "UbuntuServer"
+  default = "0001-com-ubuntu-server-focal"
 }
 
 variable "os_sku" {
-  default = "18.04-LTS"
+  default = "20_04-lts-gen2"
 }
 
 variable "os_version" {
