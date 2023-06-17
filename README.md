@@ -2,7 +2,8 @@
 ## What is this
 This is a quick terraform script to help you setup azure VM(s) in a single VPC/Subnet with public hostnames. The script supports creating multiple VMs using a vm_map cli argument. At the moment, the vm_map requires a name and a private-ip-address within subnet cidr `10.0.2.0/24`. For example of vm_map input, see [this](#dont-need-two-vms-or-change-other-settings)
 ## Prerequisites
-The script needs terraform and azure cli to run. These can be installed using a packet manager like apt (linux) or using homebrew (mac). 
+The script needs terraform and azure cli to run. These can be installed using a packet manager like apt (linux) or using homebrew (mac).
+
 NOTE: These are mac instructions (homebrew -> terraform --> azure cli). Provided as-is. 
 ```shell
 #install homebrew
