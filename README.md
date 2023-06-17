@@ -29,7 +29,7 @@ Default creates two vm nodes. To override pass the vm map in cli. Other Variable
 
 Note: other vriables like vm os, os disk size, vm-size, subnet cidr etc can be specified as cli input. see `var.tf` file for details.
 
-E.g. the default will setup two ubuntu nodes with `10.0.2.21` and `10.0.2.22` private_ip_address in westus2 azure region, running ubuntu server 20.04 lts os version. The default machine size is `Standard_D32s_v3` or the recomended 32 vcores - 128gb ram that securiti.ai recommends for `plus` workloads. 
+E.g. the default will setup two ubuntu nodes with `10.0.2.21` and `10.0.2.22` private_ip_address in `westus2` azure region, running `ubuntu server 20.04 lts` os version. The default machine size is `Standard_D32s_v3` or the recomended 32 vcores - 128gb ram that securiti.ai recommends for `plus` workloads. 
 ```shell
 ## create a single node cluster
 $> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}}'
