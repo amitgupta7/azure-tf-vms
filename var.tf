@@ -69,11 +69,14 @@ variable "vm_map" {
 variable "licensekey" {
   type        = string
   description = "Privaci Appliance License key."
+  default = "license-file-sting-value"
 }
 
 variable "downloadurl" {
   type        = string
   description = "Enter the download url to download directly to the VM. "
+  default = "download-url-sting-value"
+
 }
 
 variable "masterIp" {
