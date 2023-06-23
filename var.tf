@@ -79,6 +79,6 @@ variable "downloadurl" {
 variable "masterIp" {
   type        = string
   description = "Enter the IP address of the master POD here"
-  default = var.vm_map["pod1"].private_ip_address
+  default = "10.0.2.21"
 }
   
