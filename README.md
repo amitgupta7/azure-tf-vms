@@ -77,8 +77,8 @@ hostnames = [
 ]
 ssh_credentials = "azuser/yourPasswordStringHere"
 ```
-## Downloading SAI packages 
-Add the download url and license key to your `terraform.tfvars` file to download to `/home/azuser` folder with azure cloud-init. The script will try and install the cluster. The install output can be checked in `/var/log/cloud-init-output.log file`. 
+## Downloading SAI packages and running a cluster install
+Create a new pod and add the download url and license key to your `terraform.tfvars` file. The cloud init will download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). 
 ```hcl
 downloadurl = "provide_installer_tar_url"
 licensekey = "provide_license_key"
