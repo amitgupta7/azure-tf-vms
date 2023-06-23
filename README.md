@@ -63,7 +63,7 @@ os_offer           = "RHEL"
 os_sku             = "87-gen2"
 azpwd              = "strongPwd"
 location           = "eastus2"
-vm_map             = {"pod1":{"private_ip_address":"10.0.2.21"},"pod2":{"private_ip_address":"10.0.2.22"}, "pod3":{"private_ip_address":"10.0.2.23"}}
+vm_map             = {"pod1":{"private_ip_address":"10.0.2.21", role = "master"},"pod2":{"private_ip_address":"10.0.2.22", role = "worker"}, "pod3":{"private_ip_address":"10.0.2.23", role = "worker"}}
 ```
 ## Output (IMPORTANT: please save)
 NOTE: The script will output the hostnames and mandatory parameters (for resource cleanup `tfda` command).
@@ -78,7 +78,7 @@ hostnames = [
 ssh_credentials = "azuser/yourPasswordStringHere"
 ```
 ## Downloading SAI packages and running a cluster install
-Create a new pod and add the download url and license key to your `terraform.tfvars` file. The cloud init will download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. The default `masterIP` is set to `10.0.2.21`.
+Create a new pod and add the download url and license key to your `terraform.tfvars` file. The cloud init will download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. The default `masterIP` is set to `10.0.2.21` and is read from the `pod1` setting in the vm-map.
 ```hcl
 downloadurl  = "provide_installer_tar_url"
 licensekey   = "provide_license_key"
