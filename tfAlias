@@ -1,4 +1,6 @@
 function terraform() { echo "+ terraform $@"; command terraform $@; }
+alias clrssh='echo > ~/.ssh/known_hosts'
+alias showssh='cat ~/.ssh/known_hosts'
 alias tf='terraform'
 alias tfa='terraform apply'
 alias tfaa='terraform apply -auto-approve'

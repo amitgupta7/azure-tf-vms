@@ -1,4 +1,4 @@
-#!/usr/bin/sh set -e -x
+#!/usr/bin/sh
 #main driver function
 main() {
   echo "## Attempting to install the securiti appliance ##"
