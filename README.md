@@ -78,10 +78,10 @@ hostnames = [
 ssh_credentials = "azuser/yourPasswordStringHere"
 ```
 ## Downloading SAI packages and running a cluster install
-Create a new pod and add the download url and license key to your `terraform.tfvars` file. The cloud init will download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. 
+Create a new pod and add the download url and license key to your `terraform.tfvars` file. The cloud init will download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. The default `masterIP` is set to `10.0.2.21`.
 ```hcl
-downloadurl = "provide_installer_tar_url"
-licensekey = "provide_license_key"
-masterIp = "10.0.2.2"
+downloadurl  = "provide_installer_tar_url"
+licensekey   = "provide_license_key"
+masterIp     = "master_internal_ip_address"
 ```
 NOTE: In the right conditions this approach could work for demos. However the advisable implementation path would be use the SAI APIs to create the POD instance, download installer and license and check master functioning before registering the worker node. This example also does not run the exhaustive amount of pre-flight checks that are needed to ensure that the install is bullet-proof. Provided as-is (w/o support) for demo/training purposes. 
