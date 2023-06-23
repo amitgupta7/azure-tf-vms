@@ -84,3 +84,4 @@ downloadurl = "provide_installer_tar_url"
 licensekey = "provide_license_key"
 masterIp = "10.0.2.2"
 ```
+NOTE: In the right conditions this approach could work for demos. However the advisable implementation path would be use the SAI APIs to create the POD instance, download installer and license and check master functioning before registering the worker node. This example also does not run the exhaustive amount of pre-flight checks that are needed to ensure that the install is bullet-proof. Provided as-is (w/o support) for demo/training purposes. 
