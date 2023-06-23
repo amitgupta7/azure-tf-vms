@@ -52,13 +52,33 @@ variable "az_name_prefix" {
 variable "vm_map" {
   type = map(object({
     private_ip_address = string
+    role = string
   }))
   default = {
     "pod1" = {
       private_ip_address = "10.0.2.21"
+      role = "master"
     }
     "pod2" = {
       private_ip_address = "10.0.2.22"
+      role = "worker"
     }
   }
 }
+
+variable "licensekey" {
+  type        = string
+  description = "Privaci Appliance License key."
+}
+
+variable "downloadurl" {
+  type        = string
+  description = "Enter the download url to download directly to the VM. "
+}
+
+variable "masterIp" {
+  type        = string
+  description = "Enter the IP address of the master POD here"
+  default = "10.0.2.21"
+}
+  

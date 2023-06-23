@@ -1,7 +1,8 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
+      version = "3.61.0"
     }
   }
 }
@@ -73,6 +74,7 @@ resource "azurerm_network_interface_security_group_association" "nsg" {
   network_security_group_id = azurerm_network_security_group.pod_sg.id
 }
 
+
 resource "azurerm_linux_virtual_machine" "podvms" {
   for_each              = var.vm_map
   name                  = "${var.az_name_prefix}-${each.key}-vm"
@@ -97,7 +99,23 @@ resource "azurerm_linux_virtual_machine" "podvms" {
   admin_password                  = var.azpwd
   disable_password_authentication = false
 
+  custom_data = base64encode(data.template_file.cloud-init[each.key].rendered)
+
 }
+
+data "template_file" "cloud-init" {
+  for_each              = var.vm_map
+  template = file("appliance_init.tpl")
+  vars = {
+    downloadurl = var.downloadurl
+    license     = var.licensekey
+    privatePodIp = each.value["private_ip_address"]
+    nodeType     = each.value["role"]
+    masterIp = var.masterIp
+  }
+}
+
+
 
 output "hostnames" {
   value = values(azurerm_public_ip.pod_ip).*.fqdn

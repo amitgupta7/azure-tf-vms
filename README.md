@@ -16,6 +16,14 @@ $> az login
 ## az group create ....
 ```
 
+installing hashicorp/template on m1 macs
+```shell
+brew install kreuzwerker/taps/m1-terraform-provider-helper
+m1-terraform-provider-helper activate
+m1-terraform-provider-helper install hashicorp/template -v v2.2.0
+terraform init -upgrade
+```
+
 ## To use the tfscript
 Clone `main` branch. Alternatively use [released packages](https://github.com/amitgupta7/azure-tf-vms/releases)
 ```shell
@@ -68,4 +76,11 @@ hostnames = [
   "azure-tf-vms-pod3.eastus2.cloudapp.azure.com"
 ]
 ssh_credentials = "azuser/yourPasswordStringHere"
+```
+##Downloading SAI packages 
+Add the download url and license key to your `terraform.tfvars` file to download to `/home/azuser` folder with azure cloud-init. The script will try and install the cluster. The install output can be checked in `/var/log/cloud-init-output.log file`. 
+```hcl
+downloadurl = "provide_installer_tar_url"
+licensekey = "provide_license_key"
+masterIp = "10.0.2.2"
 ```
