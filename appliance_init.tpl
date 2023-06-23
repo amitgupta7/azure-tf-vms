@@ -2,6 +2,8 @@
 #main function
 main() {
   echo "## Attempting to install the securiti appliance ##"
+  sysctl -w vm.max_map_count=262144 >/dev/null
+  echo 'vm.max_map_count=262144' >> etc/sysctl.conf
   mkdir -p /home/azuser/pod-installer 
   curl "${downloadurl}" --output /home/azuser//pod-installer/privaci-appliance-latest.tar
   echo "${license}" > /home/azuser//pod-installer/license.txt
