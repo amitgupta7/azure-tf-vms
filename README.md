@@ -16,12 +16,12 @@ $> az login
 ## az group create ....
 ```
 
-installing hashicorp/template on m1 macs
+installing hashicorp/template on m1 macs (ignore otherwise).
 ```shell
-brew install kreuzwerker/taps/m1-terraform-provider-helper
-m1-terraform-provider-helper activate
-m1-terraform-provider-helper install hashicorp/template -v v2.2.0
-terraform init -upgrade
+$> brew install kreuzwerker/taps/m1-terraform-provider-helper
+$> m1-terraform-provider-helper activate
+$> m1-terraform-provider-helper install hashicorp/template -v v2.2.0
+$> terraform init -upgrade
 ```
 
 ## To use the tfscript
@@ -47,11 +47,11 @@ The script will prompt for an existing `az_subscription_id`, `az_resource_group`
 Note: The `REQUIRED USER INPUT` and other variables like vm os, os disk size, vm-size, subnet cidr etc can also be specified as cli input or local `.tfvars` file. see `var.tf` file for detailed list of variables (and default values) that can be dynamically specified to the script.
 ```shell
 ## create a single node cluster
-$> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}}'
+$> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21", "role":"master"}}'
 ## create a two node cluster (default) in eastus2 (instead of default westus2)
 tfa -var=location=eastus2
 ## create a 3 node cluster
-$> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21"}, "pod2":{"private_ip_address":"10.0.2.22"}, "pod3":{"private_ip_address":"10.0.2.23"}}'
+$> tfa -var=vm_map='{"pod1":{"private_ip_address":"10.0.2.21", "role":"master"}, "pod2":{"private_ip_address":"10.0.2.22", "role":"worker"}, "pod3":{"private_ip_address":"10.0.2.23", "role":"worker"}}'
 ```
 Alternatively create a `terraform.tfvars` file to override the variables like location, os-image (offer, sku), vm size and vm_map. e.g.
 ```hcl
