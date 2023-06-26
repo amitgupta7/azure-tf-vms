@@ -1,4 +1,7 @@
 # azure-tf-vms
+## Provided as-is (w/o support) 
+This example also does not run the exhaustive amount of pre-flight checks that are needed to ensure that the install is bullet-proof. Only for demo/training purposes. 
+
 ## What is this
 This is a quick terraform script to help you setup azure VM(s) in a single VPC/Subnet with public hostnames. The script supports creating multiple VMs using a vm_map cli argument. At the moment, the vm_map requires a name and a private-ip-address within subnet cidr `10.0.2.0/24`. For example of vm_map input, see [this](#dont-need-two-vms-or-change-other-settings)
 ## Prerequisites
@@ -84,4 +87,4 @@ downloadurl  = "provide_installer_tar_url"
 licensekey   = "provide_license_key"
 masterIp     = "master_internal_ip_address"
 ```
-NOTE: In the right conditions this approach could work for demos. However the advisable implementation path would be use the SAI APIs to create the POD instance, download installer and license and check master functioning before registering the worker node. This example also does not run the exhaustive amount of pre-flight checks that are needed to ensure that the install is bullet-proof. Provided as-is (w/o support) for demo/training purposes. 
+NOTE: In the right conditions this approach could work for demos. However the advisable implementation path would be use the SAI APIs to create the POD instance, download installer and license and check master functioning before registering the worker node. 
