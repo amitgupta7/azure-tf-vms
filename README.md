@@ -81,7 +81,7 @@ hostnames = [
 ssh_credentials = "azuser/yourPasswordStringHere"
 ```
 ## Creating SAI appliance and obtain license and download URL
-A new SAI appliance needs to be created in the securiti portal for this script to automatically install and register the POD. Alternatively, the `create_sai_appliance.sh` shell script can be used to create an appliance and obtain the download URL. The shell script requires a .env file with SAI API keys. Run the below steps to create a securiti appliance and print the `license_key` and `download_url` for [next section](#downloading-sai-packages-and-running-a-cluster-install).
+A new SAI appliance needs to be created in the securiti portal for this script to automatically install and register the POD. Alternatively, the `create_sai_appliance.sh` shell script can be used to create an appliance and obtain the download URL. The shell script requires a .env file with SAI API keys. Run the below steps to create a securiti appliance and print the `license_key` and `download_url` for [next section](#downloading-sai-packages-and-running-a-cluster-install). To delete the SAI appliance from the portal, use `delete_appliance.sh` script with the appliance id as argument. 
 ```shell 
 $> cat sai_api_keys.env
 X_API_Secret="api-secret-here"
@@ -96,6 +96,14 @@ $> sh create_sai_appliance.sh
 }
 {
   "download_url": "installer_tar_url"
+}
+{
+  "appliance_diagnostics_script_url": "diagnostics_script_url"
+}
+$> sh delete_appliance.sh 8a384ab0-d24d-4196-93de-3670207020e4
+{
+  "status": 0,
+  "message": "Deletion successful"
 }
 ```
 ## Downloading SAI packages and running a cluster install
