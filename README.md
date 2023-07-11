@@ -80,6 +80,24 @@ hostnames = [
 ]
 ssh_credentials = "azuser/yourPasswordStringHere"
 ```
+## Creating SAI appliance and obtain license and download URL
+A new SAI appliance needs to be created in the securiti portal for this script to automatically install and register the POD. Alternatively, the `create_sai_appliance.sh` shell script can be used to create an appliance and obtain the download URL. The shell script requires a .env file with SAI API keys. Run the below steps to create a securiti appliance and print the `license_key` and `download_url` for [next section](#downloading-sai-packages-and-running-a-cluster-install).
+```shell 
+$> cat sai_api_keys.env
+X_API_Secret="api-secret-here"
+X_API_Key="api-key-here"
+X_TIDENT="sai-tenantId-here"
+$> mv sai_api_keys.env .env
+$> sh create_sai_appliance.sh
+{
+  "appliance_name": "localtest-5923",
+  "appliance_id": "8a384ab0-d24d-4196-93de-3670207020e4",
+  "license": "license_key"
+}
+{
+  "download_url": "installer_tar_url"
+}
+```
 ## Downloading SAI packages and running a cluster install
 Create a new pod and add the download url and license key to your `terraform.tfvars` file. The cloud init will download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. The default `masterIP` is set to `10.0.2.21`.
 ```hcl
