@@ -109,6 +109,10 @@ data "template_file" "cloud-init" {
   vars = {
     downloadurl = var.downloadurl
     license     = var.licensekey
+    x-key       = var.X_API_Key
+    x-secret    = var.X_API_Secret
+    x-tenant    = var.X_TIDENT
+    pod_owner   = var.pod_owner
     privatePodIp = each.value["private_ip_address"]
     nodeType     = each.value["role"]
     masterIp = var.masterIp

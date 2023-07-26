@@ -84,4 +84,23 @@ variable "masterIp" {
   description = "Enter the IP address of the master POD here"
   default = "10.0.2.21"
 }
+
+variable "X_API_Secret" {
+  type        = string
+  description = "SAI API secret"
+}
   
+variable "X_API_Key" {
+  type        = string
+  description = "SAI API key"
+}
+
+variable "X_TIDENT" {
+  type        = string
+  description = "SAI Tenant ID"
+}
+
+variable "pod_owner" {
+  type        = string
+  description = "POD Owner Email, must be SAI tenant admin"
+}
