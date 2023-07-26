@@ -107,8 +107,6 @@ data "template_file" "cloud-init" {
   for_each              = var.vm_map
   template = file("appliance_init.tpl")
   vars = {
-    downloadurl = var.downloadurl
-    license     = var.licensekey
     x-key       = var.X_API_Key
     x-secret    = var.X_API_Secret
     x-tenant    = var.X_TIDENT

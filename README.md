@@ -107,10 +107,12 @@ $> sh delete_appliance.sh 8a384ab0-d24d-4196-93de-3670207020e4
 }
 ```
 ## Downloading SAI packages and running a cluster install
-Create a new pod and add the download url and license key to your `terraform.tfvars` file. The cloud init will download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. The default `masterIP` is set to `10.0.2.21`.
+Provide the `pod_owner`,`X_TIDENT`, `X_API_Key` and `X_API_Secret` values in your `terraform.tfvars` file. The cloud init will use the APIs to download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. The default `masterIP` is set to `10.0.2.21`.
 ```hcl
-downloadurl  = "provide_installer_tar_url"
-licensekey   = "provide_license_key"
+X_API_Secret="sai_api_secret"
+X_API_Key="sai_api_key"
+X_TIDENT="sai_tenant_identifier"
+pod_owner = "sai_tenant_admin_email"
 masterIp     = "master_internal_ip_address"
 ```
-NOTE: In the right conditions this approach could work for demos. However the advisable implementation path would be use the SAI APIs to create the POD instance, download installer and license and check master functioning before registering the worker node. 
+NOTE: In the right conditions this approach could work for demos. However, the command `snap install jq` will only work on ubuntu VMs. Please change the same in the `appliance_init.tpl` file before initiating the terraform apply.
