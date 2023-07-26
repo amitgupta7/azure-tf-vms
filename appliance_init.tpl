@@ -1,6 +1,7 @@
 #!/usr/bin/sh
 #main function
 main() {
+  snap install jq
   echo "## Attempting to install the securiti appliance ##"
   sysctl -w vm.max_map_count=262144 >/dev/null
   echo 'vm.max_map_count=262144' >> etc/sysctl.conf
@@ -39,7 +40,7 @@ main() {
     echo "## Attempting to install master ##"
     sudo ./gravity install --advertise-addr=$IP --token=$SECRET --cloud-provider=generic --state-dir $STATE_DIR
     kubectl wait --for=condition=Ready --timeout=120s pod/priv-appliance-redis-master-0
-    kubectl exec -it $(kubectl get pods -l app=config-controller -ojsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}') securitictl register -- -l "${license}"
+    kubectl exec -it $(kubectl get pods -l app=config-controller -ojsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}') securitictl register -- -l "$LICENSE"
   else
     echo "## sleeping for 30mins for master to come up ##"
     sleep 1800
