@@ -15,7 +15,7 @@ NOTE: These are mac instructions (homebrew -> terraform --> azure cli). Provided
 brew install terraform
 ## install az cli
 brew install azure-cli
-$> az login
+$> az login --use-device-code
 ## az group create ....
 ```
 
@@ -80,8 +80,20 @@ hostnames = [
 ]
 ssh_credentials = "azuser/yourPasswordStringHere"
 ```
-## Creating SAI appliance and obtain license and download URL
-A new SAI appliance needs to be created in the securiti portal for this script to automatically install and register the POD. Alternatively, the `create_sai_appliance.sh` shell script can be used to create an appliance and obtain the download URL. The shell script requires a .env file with SAI API keys. Run the below steps to create a securiti appliance and print the `license_key` and `download_url` for [next section](#downloading-sai-packages-and-running-a-cluster-install). To delete the SAI appliance from the portal, use `delete_appliance.sh` script with the appliance id as argument. 
+
+## Automatically downloading SAI packages and running a cluster install
+Provide the `pod_owner`,`X_TIDENT`, `X_API_Key` and `X_API_Secret` values in your `terraform.tfvars` file. The cloud init will use the APIs to download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. The default `masterIP` is set to `10.0.2.21`.
+```hcl
+X_API_Secret = "sai_api_secret"
+X_API_Key    = "sai_api_key"
+X_TIDENT     = "sai_tenant_identifier"
+pod_owner    = "sai_tenant_admin_email"
+masterIp     = "master_internal_ip_address"
+```
+NOTE: In the right conditions this approach could work for demos. However, the command `snap install jq` will only work on ubuntu VMs. Please change the same in the `appliance_init.tpl` file before initiating the terraform apply.
+
+## EXTRAS: SAI appliance API shell scripts
+The `create_sai_appliance.sh` shell script can be used to create an appliance and obtain the download URL. The shell script requires a .env file with SAI API keys. Run the below steps to create a securiti appliance and print the `license_key` and `download_url`. To delete the SAI appliance from the portal, use `delete_appliance.sh` script with the appliance id as argument. 
 ```shell 
 $> cat sai_api_keys.env
 X_API_Secret="api-secret-here"
@@ -106,13 +118,3 @@ $> sh delete_appliance.sh 8a384ab0-d24d-4196-93de-3670207020e4
   "message": "Deletion successful"
 }
 ```
-## Downloading SAI packages and running a cluster install
-Provide the `pod_owner`,`X_TIDENT`, `X_API_Key` and `X_API_Secret` values in your `terraform.tfvars` file. The cloud init will use the APIs to download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. The default `masterIP` is set to `10.0.2.21`.
-```hcl
-X_API_Secret = "sai_api_secret"
-X_API_Key    = "sai_api_key"
-X_TIDENT     = "sai_tenant_identifier"
-pod_owner    = "sai_tenant_admin_email"
-masterIp     = "master_internal_ip_address"
-```
-NOTE: In the right conditions this approach could work for demos. However, the command `snap install jq` will only work on ubuntu VMs. Please change the same in the `appliance_init.tpl` file before initiating the terraform apply.
