@@ -13,8 +13,9 @@ NOTE: These are mac instructions (homebrew -> terraform --> azure cli). Provided
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ## install terraform
 brew install terraform
-## install az cli
+## install az cli with brew or pip
 brew install azure-cli
+## pip install azure-cli && echo PATH=\$PATH:\$HOME/.local/bin >> ~/.bashrc && bash -l 
 $> az login --use-device-code
 ## az group create ....
 ```
