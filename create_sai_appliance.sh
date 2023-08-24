@@ -1,5 +1,5 @@
 #!/usr/bin/sh
-set -a && source .env && set +a
+set -a && source `pwd`/.env && set +a
 curl -s -X 'POST' \
   'https://app.securiti.ai/core/v1/admin/appliance' \
   -H 'accept: application/json' \
