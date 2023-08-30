@@ -15,7 +15,7 @@ main() {
     -H 'X-TIDENT:  '${x-tenant} \
     -H 'Content-Type: application/json' \
     -d '{
-    "owner": "amit.gupta@securiti.ai",
+    "owner": "'${pod_owner}'",
     "co_owners": [],
     "name": "localtest-'$(date +"%s")'",
     "desc": "",
