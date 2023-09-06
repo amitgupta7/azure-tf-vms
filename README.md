@@ -1,6 +1,6 @@
 # azure-tf-vms
 ## Provided as-is (w/o support) 
-This example also does not run the exhaustive amount of pre-flight checks that are needed to ensure that the install is bullet-proof. Only for demo/training purposes. 
+This example also does not run the exhaustive amount of pre-flight checks that are needed to ensure that the install is bullet-proof. Only for demo/training purposes. The gravity based installer takes about 15 mins to download and 30 minutes to setup. So please be patient as the remote script sets up the cluster. Presently, the script supports only one Master node (and multiple worker nodes). 
 
 ## What is this
 This is a quick terraform script to help you setup azure VM(s) in a single VPC/Subnet with public hostnames. The script supports creating multiple VMs using a vm_map cli argument. At the moment, the vm_map requires a name and a private-ip-address within subnet cidr `10.0.2.0/24`. For example of vm_map input, see [this](#dont-need-two-vms-or-change-other-settings)
@@ -19,15 +19,6 @@ brew install azure-cli
 $> az login --use-device-code
 ## az group create ....
 ```
-
-installing hashicorp/template on m1 macs (ignore otherwise).
-```shell
-$> brew install kreuzwerker/taps/m1-terraform-provider-helper
-$> m1-terraform-provider-helper activate
-$> m1-terraform-provider-helper install hashicorp/template -v v2.2.0
-$> terraform init -upgrade
-```
-
 ## To use the tfscript
 Clone `main` branch. Alternatively use [released packages](https://github.com/amitgupta7/azure-tf-vms/releases)
 ```shell
