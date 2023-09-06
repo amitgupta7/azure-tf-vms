@@ -99,24 +99,29 @@ resource "azurerm_linux_virtual_machine" "podvms" {
   admin_password                  = var.azpwd
   disable_password_authentication = false
 
-  custom_data = base64encode(data.template_file.cloud-init[each.key].rendered)
+  # custom_data = base64encode(data.template_file.cloud-init[each.key].rendered)
 
 }
 
-data "template_file" "cloud-init" {
-  for_each              = var.vm_map
-  template = file("appliance_init.tpl")
-  vars = {
-    x-key       = var.X_API_Key
-    x-secret    = var.X_API_Secret
-    x-tenant    = var.X_TIDENT
-    pod_owner   = var.pod_owner
-    privatePodIp = each.value["private_ip_address"]
-    nodeType     = each.value["role"]
-    masterIp = var.masterIp
+resource "null_resource" "install_pod" {
+  for_each = var.vm_map
+  depends_on = [azurerm_linux_virtual_machine.podvms]
+  connection {
+    type     = "ssh"
+    user     = var.azuser
+    password = var.azpwd
+    host = azurerm_public_ip.pod_ip[each.key].fqdn
   }
-}
+  provisioner "file" {
+    source = "appliance_init.tpl"
+    destination = "/tmp/appliance_init.tpl"
+  }
 
+  provisioner "remote-exec" {
+    inline = [ "sudo sh /tmp/appliance_init.tpl -n ${each.value["role"]} -o ${var.pod_owner} -r ${var.masterIp} -k ${var.X_API_Key} -s ${var.X_API_Secret} -t ${var.X_TIDENT} -i ${each.value["private_ip_address"]} | tee /tmp/appliance_init_out.log" ]
+  }
+
+}
 
 
 output "hostnames" {
