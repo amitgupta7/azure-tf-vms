@@ -85,8 +85,13 @@ masterIp     = "master_internal_ip_address"
 NOTE: In the right conditions this approach could work for demos. However, the command `snap install jq` will only work on ubuntu VMs. Please change the same in the `appliance_init.tpl` file before initiating the terraform apply.
 
 ## Monitoring Appliance Install
-Running `tfaa` again (after the initial run) will tail the install log to console if the install is `in-progress`. Press `ctrl+c` to stop the tail. In case the install has completed, the output will print the k8s cluster, pods and nodes status.
+The initial run of `tfaa` starts the install as `nohup`, and exits, while the intaller downloads and runs on the provisioned servers.  
 
+Running `tfaa` again will tail the install log to console if the install is `in-progress`. Press `ctrl+c` to stop the tail. 
+
+In case the install has completed, the output will print the k8s cluster, pods and nodes status.
+
+E.g. When `Installer Status: In-Progress`
 ```shell
 % tfaa
 ## .....press ctrl+c to exit......
@@ -106,8 +111,56 @@ null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:55 UTC        
 null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:57 UTC        Unpacking application logging-app:6.0.7
 null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:58 UTC        Exporting application logging-app:6.0.7 to local registry
 null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:45:03 UTC        Unpacking application monitoring-app:6.0.17
+```
 
-
+E.g. When `Installer Status: Completed`
+```shell
+% tfaa
+null_resource.install_pod["pod1"] (remote-exec): Existing Installation Lock File Found: /home/azuser/install-status.lock
+null_resource.install_pod["pod1"] (remote-exec): Installer Status: Completed
+null_resource.install_pod["pod1"] (remote-exec): Cluster name:          kindgalileo2730
+null_resource.install_pod["pod1"] (remote-exec): Cluster status:                active
+null_resource.install_pod["pod1"] (remote-exec): Application:           privaci-appliance, version 1.98.1-04p
+null_resource.install_pod["pod1"] (remote-exec): Gravity version:       6.1.48 (client) / 6.1.48 (server)
+null_resource.install_pod["pod1"] (remote-exec): Join token:            sai123
+null_resource.install_pod["pod1"] (remote-exec): Periodic updates:      Not Configured
+null_resource.install_pod["pod1"] (remote-exec): Remote support:                Not Configured
+null_resource.install_pod["pod1"] (remote-exec): Last completed operation:
+null_resource.install_pod["pod1"] (remote-exec):     * 1-node install
+null_resource.install_pod["pod1"] (remote-exec):       ID:              ced40d6a-c469-427c-8528-9f04bf6d8fa0
+null_resource.install_pod["pod1"] (remote-exec):       Started:         Tue Sep 12 20:40 UTC (27 minutes ago)
+null_resource.install_pod["pod1"] (remote-exec):       Completed:       Tue Sep 12 20:41 UTC (27 minutes ago)
+null_resource.install_pod["pod1"] (remote-exec): Cluster endpoints:
+null_resource.install_pod["pod1"] (remote-exec):     * Authentication gateway:
+null_resource.install_pod["pod1"] (remote-exec):         - 10.0.2.21:32009
+null_resource.install_pod["pod1"] (remote-exec):     * Cluster management URL:
+null_resource.install_pod["pod1"] (remote-exec):         - https://10.0.2.21:32009
+null_resource.install_pod["pod1"] (remote-exec): Cluster nodes:
+null_resource.install_pod["pod1"] (remote-exec):     Masters:
+null_resource.install_pod["pod1"] (remote-exec):         * azure-tf-vms1-amit-pod1-vm / 10.0.2.21 / node
+null_resource.install_pod["pod1"] (remote-exec):             Status:            healthy
+null_resource.install_pod["pod1"] (remote-exec):             Remote access:     online
+null_resource.install_pod["pod1"] (remote-exec): NAME        STATUS   ROLES   AGE   VERSION
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   Ready    node    23m   v1.15.12
+null_resource.install_pod["pod1"] (remote-exec): NAME                                                    READY   STATUS      RESTARTS   AGE
+null_resource.install_pod["pod1"] (remote-exec): kube-metrics-adapter-6b967c7568-zc9fq                   1/1     Running     0          9m51s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-cargo-message-service-849876d44-c6xjs    1/1     Running     0          9m51s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-config-controller-8695f8d8d7-fh2nh       1/1     Running     0          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-connector-policy-76fc595f6d-vz8tw        3/3     Running     1          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-dlq-processor-1694552400-tgp6p           0/1     Completed   0          8m22s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-download-worker-7cc7569879-dbtbl         3/3     Running     1          9m51s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-elasticsearch-master-0                   1/1     Running     0          9m51s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-kafka-worker-6c4978dd76-2mx2v            1/1     Running     0          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-monitor-status-nwvlv                     1/1     Running     0          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-postgresql-0                             1/1     Running     0          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-qos-orchestrator-7d6dc5d598-r8c5g        1/1     Running     3          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-ranger-policy-service-7fb86894fb-c6jqf   1/1     Running     0          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-redis-master-0                           1/1     Running     0          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-redis-metrics-6bdd65c755-8przs           1/1     Running     0          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-redis-reaper-54cdbdf894-qstzx            1/1     Running     0          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-scheduler-7d8b8788c9-8nqmg               1/1     Running     2          9m52s
+null_resource.install_pod["pod1"] (remote-exec): priv-appliance-worker-d8b9f4c78-8xqpz                   1/1     Running     0          9m52s
+null_resource.install_pod["pod1"]: Creation complete after 16s [id=4512759690815130263]
 ```
 
 ## EXTRAS: SAI appliance API shell scripts
