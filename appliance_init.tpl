@@ -1,7 +1,7 @@
 #!/usr/bin/sh
 set -o xtrace
 install_home=/home/$SUDO_USER/pod-installer
-lockfile=$install_home/install-status.lock
+lockfile=/home/$SUDO_USER/install-status.lock
 
 while getopts r:k:s:t:o:n:i: flag
 do
@@ -38,6 +38,7 @@ done
   STATE_DIR="/var/lib/gravity"
   IP="${privatePodIp}"
   SECRET="sai123"
+  echo 1 > $lockfile
   if [ "${nodeType}" = "master" ]
   then
     echo "## Attempting to install master ##"
@@ -67,4 +68,4 @@ done
     echo "## Attempting to install worker ##"
     ./gravity join ${masterIp} --advertise-addr=$IP --token=$SECRET --cloud-provider=generic --role worker --state-dir $STATE_DIR
   fi
-echo $? > $lockfile
+echo 0 > $lockfile

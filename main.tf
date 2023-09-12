@@ -128,11 +128,18 @@ resource "null_resource" "install_pod" {
   }
   provisioner "file" {
     source = "appliance_init.tpl"
-    destination = "/tmp/appliance_init.tpl"
+    destination = "/home/${var.azuser}/appliance_init.tpl"
+  }
+
+    provisioner "file" {
+    source = "install_status.sh"
+    destination = "/home/${var.azuser}/install_status.sh"
   }
 
   provisioner "remote-exec" {
-    inline = [ "[ ! -f /home/${var.azuser}/pod-installer/install-status.lock ] && nohup sudo sh /tmp/appliance_init.tpl -n ${each.value["role"]} -o ${var.pod_owner} -r ${var.masterIp} -k ${var.X_API_Key} -s ${var.X_API_Secret} -t ${var.X_TIDENT} -i ${each.value["private_ip_address"]} > /tmp/appliance_init.out 2>&1 &", "sleep 1" ]
+    inline = ["sudo sh /home/${var.azuser}/install_status.sh /home/${var.azuser}/install-status.lock", 
+    "[ ! -f /home/${var.azuser}/install-status.lock ] && nohup sudo sh /home/${var.azuser}/appliance_init.tpl -n ${each.value["role"]} -o ${var.pod_owner} -r ${var.masterIp} -k ${var.X_API_Key} -s ${var.X_API_Secret} -t ${var.X_TIDENT} -i ${each.value["private_ip_address"]} > /home/${var.azuser}/appliance_init.out 2>&1 &", 
+    "sleep 1" ]
   }
 
 }
