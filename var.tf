@@ -16,7 +16,7 @@ variable "azpwd" {
 }
 
 variable "vm_size" {
-  default = "Standard_D32s_v3"
+  default = "Standard_D8s_v3"
 }
 
 variable "os_disk_size_in_gb" {

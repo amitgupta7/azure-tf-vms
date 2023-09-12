@@ -1,5 +1,5 @@
 #!/usr/bin/sh
-set -o xtrace
+set -e
 install_home=/home/$SUDO_USER/pod-installer
 lockfile=/home/$SUDO_USER/install-status.lock
 

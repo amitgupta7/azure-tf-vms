@@ -1,22 +1,5 @@
 #!/usr/bin/sh
-# print_status(){
-#     if [ ! -s $1 ] 
-#     then
-#         echo 'Downloading Installer'
-#     else
-#         state=$(cat $1)
-#         if [ $state -eq 0 ]
-#             then
-#                 echo 'Success'
-#                 gravity status
-#             else
-#                 echo 'In Progress' 
-#                 gravity plan
-#         fi
-#     fi
-
-# }
-
+set -e
 if [ -f $1 ] 
  then
    echo "Existing Installation Lock File Found: "$1
