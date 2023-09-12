@@ -98,12 +98,26 @@ resource "azurerm_linux_virtual_machine" "podvms" {
   admin_username                  = var.azuser
   admin_password                  = var.azpwd
   disable_password_authentication = false
+}
 
-  # custom_data = base64encode(data.template_file.cloud-init[each.key].rendered)
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "example" {
+  for_each              = var.vm_map
+  virtual_machine_id    = azurerm_linux_virtual_machine.podvms[each.key].id
+  location              = var.location
+  enabled            = true
 
+  daily_recurrence_time = "1100"
+  timezone              = "Pacific Standard Time"
+
+  notification_settings {
+    enabled         = false
+  }
 }
 
 resource "null_resource" "install_pod" {
+    triggers = {
+    build_number = "${timestamp()}"
+  }
   for_each = var.vm_map
   depends_on = [azurerm_linux_virtual_machine.podvms]
   connection {
@@ -118,7 +132,7 @@ resource "null_resource" "install_pod" {
   }
 
   provisioner "remote-exec" {
-    inline = [ "sudo sh /tmp/appliance_init.tpl -n ${each.value["role"]} -o ${var.pod_owner} -r ${var.masterIp} -k ${var.X_API_Key} -s ${var.X_API_Secret} -t ${var.X_TIDENT} -i ${each.value["private_ip_address"]} | tee /tmp/appliance_init_out.log" ]
+    inline = [ "[ ! -f /home/${var.azuser}/pod-installer/install-status.lock ] && nohup sudo sh /tmp/appliance_init.tpl -n ${each.value["role"]} -o ${var.pod_owner} -r ${var.masterIp} -k ${var.X_API_Key} -s ${var.X_API_Secret} -t ${var.X_TIDENT} -i ${each.value["private_ip_address"]} > /tmp/appliance_init.out 2>&1 &", "sleep 1" ]
   }
 
 }
