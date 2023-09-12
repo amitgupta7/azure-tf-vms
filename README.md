@@ -84,6 +84,32 @@ masterIp     = "master_internal_ip_address"
 ```
 NOTE: In the right conditions this approach could work for demos. However, the command `snap install jq` will only work on ubuntu VMs. Please change the same in the `appliance_init.tpl` file before initiating the terraform apply.
 
+## Monitoring Appliance Install
+Running `tfaa` again (after the initial run) will tail the install log to console if the install is `in-progress`. Press `ctrl+c` to stop the tail. In case the install has completed, the output will print the k8s cluster, pods and nodes status.
+
+```shell
+% tfaa
+## .....press ctrl+c to exit......
+null_resource.install_pod["pod1"] (remote-exec): Connected!
+null_resource.install_pod["pod1"] (remote-exec): Existing Installation Lock File Found: /home/azuser/install-status.lock
+null_resource.install_pod["pod1"] (remote-exec): Installer Status: In Progress
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:49 UTC        Creating user-supplied Kubernetes resources
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:49 UTC        Create user-supplied Kubernetes resources
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:51 UTC        Executing "/export/azure-tf-vms1-amit-pod1-vm" locally
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:51 UTC        Unpacking application rbac-app:6.1.48
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:51 UTC        Exporting application rbac-app:6.1.48 to local registry
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:51 UTC        Populate Docker registry on master node azure-tf-vms1-amit-pod1-vm
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:52 UTC        Unpacking application dns-app:6.1.3
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:52 UTC        Exporting application dns-app:6.1.3 to local registry
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:54 UTC        Unpacking application bandwagon:6.0.1
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:55 UTC        Exporting application bandwagon:6.0.1 to local registry
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:57 UTC        Unpacking application logging-app:6.0.7
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:58 UTC        Exporting application logging-app:6.0.7 to local registry
+null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:45:03 UTC        Unpacking application monitoring-app:6.0.17
+
+
+```
+
 ## EXTRAS: SAI appliance API shell scripts
 The `create_sai_appliance.sh` shell script can be used to create an appliance and obtain the download URL. The shell script requires a .env file with SAI API keys. Run the below steps to create a securiti appliance and print the `license_key` and `download_url`. To delete the SAI appliance from the portal, use `delete_appliance.sh` script with the appliance id as argument. 
 ```shell 
