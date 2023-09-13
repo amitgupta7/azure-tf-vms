@@ -85,11 +85,11 @@ masterIp     = "master_internal_ip_address"
 NOTE: In the right conditions this approach could work for demos. However, the command `snap install jq` will only work on ubuntu VMs. Please change the same in the `appliance_init.tpl` file before initiating the terraform apply.
 
 ## Monitoring Appliance Install
-The initial run of `tfaa` starts the install as `nohup`, and exits, while the intaller downloads and runs on the provisioned servers.  
-
-Running `tfaa` again will tail the install log to console if the install is `in-progress`. Press `ctrl+c` to stop the tail. 
-
-In case the install has completed, the output will print the k8s cluster, pods and nodes status.
+The initial run of `tfaa` starts the install as `nohup`, and exits. The intaller script continues the downloads and runs in background on the provisioned servers. Running `tfaa` again will print install status depening on the status of the install:
+* If the `Installer Status: In-Progress`: Running `tfaa` will tail the install log to console . Press `ctrl+c` to stop the tail. 
+* If the `Installer Status: Completed` Running `tfaa` will print the k8s cluster, pods and nodes status.
+* If the `Installer Status: Error` Running `tfaa` will print the error and the steps to rerun the installer.
+* If the `Installer Status: Error` Running `tfaa  -var=clr_lock=true` will reset the error state to `In-Progress` and rerun the installer as `nohup` in background on the provisioned servers.
 
 E.g. When `Installer Status: In-Progress`
 ```shell
