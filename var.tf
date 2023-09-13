@@ -91,3 +91,9 @@ variable "pod_owner" {
   type        = string
   description = "POD Owner Email, must be SAI tenant admin"
 }
+
+variable "clr_lock" {
+  type = bool
+  default = false
+  description = "set to true, to retry installer if failed"
+}

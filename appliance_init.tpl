@@ -1,7 +1,15 @@
-#!/usr/bin/sh
-set -e
+#!/usr/bin/env bash
 install_home=/home/$SUDO_USER/pod-installer
 lockfile=/home/$SUDO_USER/install-status.lock
+touch $lockfile
+err_report() {
+    echo -n "Error at time: " && date
+    echo; echo -n "$2 failed on line $1: "
+    sed -n "$1p" $0
+    echo 1 > $lockfile
+    exit
+}
+trap 'err_report $LINENO $0' ERR
 
 while getopts r:k:s:t:o:n:i: flag
 do
@@ -20,9 +28,8 @@ done
   snap install jq
   echo "## Attempting to install the securiti appliance ##"
   sysctl -w vm.max_map_count=262144 >/dev/null
-  echo 'vm.max_map_count=262144' >> etc/sysctl.conf
+  echo 'vm.max_map_count=262144' >> /etc/sysctl.conf
   mkdir -p $install_home 
-  touch $lockfile
   curl -s -X 'GET' 'https://app.securiti.ai/core/v1/admin/appliance/download_url' \
   -H 'accept: application/json' \
   -H 'X-API-Secret:  '${xsecret} \
@@ -38,7 +45,6 @@ done
   STATE_DIR="/var/lib/gravity"
   IP="${privatePodIp}"
   SECRET="sai123"
-  echo 1 > $lockfile
   if [ "${nodeType}" = "master" ]
   then
     echo "## Attempting to install master ##"
