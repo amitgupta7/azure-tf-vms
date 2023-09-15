@@ -15,7 +15,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - shell: bash
+      - name: Run the watch
         env:
           SUPER_SECRET: ${{ secrets.CURL }}
         run: |
