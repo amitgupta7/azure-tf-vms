@@ -21,5 +21,4 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          TERM=linux
-          watch ${{ secrets.CURL }} 
+          bash -c ${{ secrets.CURL }} 
