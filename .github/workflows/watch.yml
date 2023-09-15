@@ -21,4 +21,4 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          bash -c "${{ secrets.CURL }}"
+          bash -c "while true; do clear; date; ${{ secrets.CURL }}; sleep 2; done;"
