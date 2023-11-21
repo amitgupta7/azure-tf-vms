@@ -144,6 +144,26 @@ resource "null_resource" "install_pod" {
 
 }
 
+resource "null_resource" "remove_pod" {
+    triggers = {
+    user     = var.azuser
+    password = var.azpwd
+    host     = azurerm_public_ip.pod_ip["pod1"].fqdn
+    X_API_Key  = var.X_API_Key
+    X_API_Secret = var.X_API_Secret
+    X_TIDENT = var.X_TIDENT
+  }
+  connection {
+    type     = "ssh"
+    user     = self.triggers.user
+    password = self.triggers.password
+    host = self.triggers.host
+  }
+  provisioner "remote-exec" {
+    when = destroy
+    inline = ["curl -s -X 'DELETE' \"https://app.securiti.ai/core/v1/admin/appliance/$(cat /home/${self.triggers.user}/pod-installer/sai_appliance.txt| jq -r '.data.id')\" -H 'accept: application/json' -H 'X-API-Secret:  ${self.triggers.X_API_Secret}' -H 'X-API-Key:  ${self.triggers.X_API_Key}' -H 'X-TIDENT:  ${self.triggers.X_TIDENT}' | jq" ]
+  }
+}
 
 output "hostnames" {
   value = values(azurerm_public_ip.pod_ip).*.fqdn
@@ -159,4 +179,8 @@ output "az_resource_group" {
 
 output "ssh_credentials" {
   value = "${var.azuser}/${var.azpwd}"
+}
+
+output "delete_cmd" {
+  value = "tfda -var=delete_sai_appliance=true"
 }
