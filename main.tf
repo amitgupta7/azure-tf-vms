@@ -137,7 +137,7 @@ resource "null_resource" "install_pod" {
   }
 
   provisioner "remote-exec" {
-    inline = ["sudo sh /home/${var.azuser}/install_status.sh /home/${var.azuser}/install-status.lock ${var.clr_lock}", 
+    inline = ["sudo sh /home/${var.azuser}/install_status.sh /home/${var.azuser}/install-status.lock ${var.clr_lock} ${each.value["role"]}", 
     "[ ! -f /home/${var.azuser}/install-status.lock ] && nohup sudo bash /home/${var.azuser}/appliance_init.tpl -n ${each.value["role"]} -o ${var.pod_owner} -r ${var.masterIp} -k ${var.X_API_Key} -s ${var.X_API_Secret} -t ${var.X_TIDENT} -i ${each.value["private_ip_address"]} > /home/${var.azuser}/appliance_init.out 2>&1 &", 
     "sleep 1" ]
   }

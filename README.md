@@ -1,6 +1,6 @@
 # azure-tf-vms
 ## Provided as-is (w/o support) 
-This example also does not run the exhaustive amount of pre-flight checks that are needed to ensure that the install is bullet-proof. Only for demo/training purposes. The gravity based installer takes about 15 mins to download and 30 minutes to setup. So please be patient as the remote script sets up the cluster. Presently, the script supports only one Master node (and multiple worker nodes). 
+This example also does not run the exhaustive amount of pre-flight checks that are needed to ensure that the install is bullet-proof. Only for demo/training purposes. The k3s based installer takes about 60 seconds mins to download and setup. Presently, the script supports only one Master node (and multiple worker nodes). This setup requires `k3s-based-pod-installer` setting enabled for BOP. For gravity based installer setup, see [release 3.0](https://github.com/amitgupta7/azure-tf-vms/releases/tag/3.0)  
 
 ## What is this
 This is a quick terraform script to help you setup azure VM(s) in a single VPC/Subnet with public hostnames. The script supports creating multiple VMs using a vm_map cli argument. At the moment, the vm_map requires a name and a private-ip-address within subnet cidr `10.0.2.0/24`. For example of vm_map input, see [this](#dont-need-two-vms-or-change-other-settings)
@@ -85,82 +85,103 @@ masterIp     = "master_internal_ip_address"
 NOTE: In the right conditions this approach could work for demos. However, the command `snap install jq` will only work on ubuntu VMs. Please change the same in the `appliance_init.tpl` file before initiating the terraform apply.
 
 ## Monitoring Appliance Install
-The initial run of `tfaa` starts the install as `nohup`, and exits. The intaller script continues the downloads and runs in background on the provisioned servers. Running `tfaa` again will print install status depening on the status of the install:
+The initial run of `tfaa` starts the install as `nohup`, and exits. The intaller script continues the downloads and runs in background on the provisioned servers. If you would like to run a verbose install, use `tfaa && tfaa`, or running `tfaa` again after the initial install, to print install status depening on the status of the install:
 * If the `Installer Status: In-Progress`: Running `tfaa` will tail the install log to console . Press `ctrl+c` to stop the tail. 
 * If the `Installer Status: Completed` Running `tfaa` will print the k8s cluster, pods and nodes status.
 * If the `Installer Status: Error` Running `tfaa` will print the error and the steps to rerun the installer.
-* If the `Installer Status: Error` Running `tfaa  -var=clr_lock=true` will reset the error state to `In-Progress` and rerun the installer as `nohup` in background on the provisioned servers.
+* If the `Installer Status: Error` Running `tfaa  -var=clr_lock=true` will reset the error state to `In-Progress` and rerun the installer as `nohup` in background on the provisioned servers. This feature is `Experimental`, and maynot be adequate to perform a clean-up and fresh install. Run `tfda && tfaa` if `tfaa  -var=clr_lock=true` doesn't work.
 
 E.g. When `Installer Status: In-Progress`
 ```shell
 % tfaa
 ## .....press ctrl+c to exit......
-null_resource.install_pod["pod1"] (remote-exec): Connected!
-null_resource.install_pod["pod1"] (remote-exec): Existing Installation Lock File Found: /home/azuser/install-status.lock
-null_resource.install_pod["pod1"] (remote-exec): Installer Status: In Progress
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:49 UTC        Creating user-supplied Kubernetes resources
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:49 UTC        Create user-supplied Kubernetes resources
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:51 UTC        Executing "/export/azure-tf-vms1-amit-pod1-vm" locally
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:51 UTC        Unpacking application rbac-app:6.1.48
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:51 UTC        Exporting application rbac-app:6.1.48 to local registry
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:51 UTC        Populate Docker registry on master node azure-tf-vms1-amit-pod1-vm
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:52 UTC        Unpacking application dns-app:6.1.3
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:52 UTC        Exporting application dns-app:6.1.3 to local registry
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:54 UTC        Unpacking application bandwagon:6.0.1
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:55 UTC        Exporting application bandwagon:6.0.1 to local registry
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:57 UTC        Unpacking application logging-app:6.0.7
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:44:58 UTC        Exporting application logging-app:6.0.7 to local registry
-null_resource.install_pod["pod1"] (remote-exec): Tue Sep 12 20:45:03 UTC        Unpacking application monitoring-app:6.0.17
+null_resource.install_pod["pod1"] (remote-exec): [INFO]  Awaiting default/statefulset/priv-appliance-postgresql to be ready
+null_resource.install_pod["pod1"] (remote-exec): Waiting for 1 pods to be ready...
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Validating inputs
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Done validating inputs
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Downloading installer
+null_resource.install_pod["pod1"]: Still creating... [40s elapsed]
+null_resource.install_pod["pod2"]: Still creating... [40s elapsed]
+null_resource.install_pod["pod2"] (remote-exec): Status: 200
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Done downloading installer
+null_resource.install_pod["pod2"] (remote-exec): [WARN]  Skipping installer verification
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Unzipping the installer
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Done unzipping the installer
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Ensuring pre-reqs
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Loading required kernel modules
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Adding kernel module br_netfilter
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Adding kernel module overlay
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Adding kernel module ebtables
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Adding kernel module ebtable_filter
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Adding kernel module iptable_filter
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Adding kernel module iptable_nat
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Done loading required kernel modules
+null_resource.install_pod["pod2"] (remote-exec): [INFO]  Setting sysctl configs
+null_resource.install_pod["pod2"] (remote-exec): * Applying /etc/sysctl.d/10-console-messages.conf ...
+null_resource.install_pod["pod2"] (remote-exec): kernel.printk = 4 4 1 7
+null_resource.install_pod["pod2"] (remote-exec): * Applying /etc/sysctl.d/10-ipv6-privacy.conf ...
+null_resource.install_pod["pod2"] (remote-exec): net.ipv6.conf.all.use_tempaddr = 2
+null_resource.install_pod["pod2"] (remote-exec): net.ipv6.conf.default.use_tempaddr = 2
+null_resource.install_pod["pod2"] (remote-exec): * Applying /etc/sysctl.d/10-kernel-hardening.conf ...
+null_resource.install_pod["pod2"] (remote-exec): kernel.kptr_restrict = 1
+null_resource.install_pod["pod2"] (remote-exec): * Applying /etc/sysctl.d/10-link-restrictions.conf ...
+null_resource.install_pod["pod2"] (remote-exec): fs.protected_hardlinks = 1
+null_resource.install_pod["pod2"] (remote-exec): fs.protected_symlinks = 1
+null_resource.install_pod["pod2"] (remote-exec): * Applying /etc/sysctl.d/10-magic-sysrq.conf ...
+null_resource.install_pod["pod2"] (remote-exec): kernel.sysrq = 176
+null_resource.install_pod["pod2"] (remote-exec): * Applying /etc/sysctl.d/10-network-security.conf ...
+null_resource.install_pod["pod2"] (remote-exec): net.ipv4.conf.default.rp_filter = 2
+null_resource.install_pod["pod2"] (remote-exec): net.ipv4.conf.all.rp_filter = 2
+null_resource.install_pod["pod2"] (remote-exec): * Applying /etc/sysctl.d/10-ptrace.conf ...
+null_resource.install_pod["pod2"] (remote-exec): kernel.yama.ptrace_scope = 1
+null_resource.install_pod["pod2"] (remote-exec): * Applying /etc/sysctl.d/10-zeropage.conf ...
+null_resource.install_pod["pod2"] (remote-exec): vm.mmap_min_addr = 65536
+null_resource.install_pod["pod2"] (remote-exec): * Applying /usr/lib/sysctl.d/50-default.conf ...
+null_resource.install_pod["pod2"] (remote-exec): net.ipv4.conf.default.promote_secondaries = 1
+null_resource.install_pod["pod2"] (remote-exec): sysctl: setting key "net.ipv4.conf.all.promote_secondaries": Invalid argument
+null_resource.install_pod["pod2"] (remote-exec): net.ipv4.ping_group_range = 0 2147483647
 ```
 
 E.g. When `Installer Status: Completed`
 ```shell
 % tfaa
+null_resource.install_pod["pod2"] (remote-exec): Existing Installation Lock File Found: /home/azuser/install-status.lock
+null_resource.install_pod["pod2"] (remote-exec): Installer Status: Completed on worker
+null_resource.install_pod["pod2"] (remote-exec):      Active: active (running) since Tue 2023-11-21 17:59:56 UTC; 1min 56s ago
+null_resource.install_pod["pod2"]: Creation complete after 15s [id=3576704981984554564]
+null_resource.install_pod["pod1"] (remote-exec): Connected!
 null_resource.install_pod["pod1"] (remote-exec): Existing Installation Lock File Found: /home/azuser/install-status.lock
-null_resource.install_pod["pod1"] (remote-exec): Installer Status: Completed
-null_resource.install_pod["pod1"] (remote-exec): Cluster name:          kindgalileo2730
-null_resource.install_pod["pod1"] (remote-exec): Cluster status:                active
-null_resource.install_pod["pod1"] (remote-exec): Application:           privaci-appliance, version 1.98.1-04p
-null_resource.install_pod["pod1"] (remote-exec): Gravity version:       6.1.48 (client) / 6.1.48 (server)
-null_resource.install_pod["pod1"] (remote-exec): Join token:            sai123
-null_resource.install_pod["pod1"] (remote-exec): Periodic updates:      Not Configured
-null_resource.install_pod["pod1"] (remote-exec): Remote support:                Not Configured
-null_resource.install_pod["pod1"] (remote-exec): Last completed operation:
-null_resource.install_pod["pod1"] (remote-exec):     * 1-node install
-null_resource.install_pod["pod1"] (remote-exec):       ID:              ced40d6a-c469-427c-8528-9f04bf6d8fa0
-null_resource.install_pod["pod1"] (remote-exec):       Started:         Tue Sep 12 20:40 UTC (27 minutes ago)
-null_resource.install_pod["pod1"] (remote-exec):       Completed:       Tue Sep 12 20:41 UTC (27 minutes ago)
-null_resource.install_pod["pod1"] (remote-exec): Cluster endpoints:
-null_resource.install_pod["pod1"] (remote-exec):     * Authentication gateway:
-null_resource.install_pod["pod1"] (remote-exec):         - 10.0.2.21:32009
-null_resource.install_pod["pod1"] (remote-exec):     * Cluster management URL:
-null_resource.install_pod["pod1"] (remote-exec):         - https://10.0.2.21:32009
-null_resource.install_pod["pod1"] (remote-exec): Cluster nodes:
-null_resource.install_pod["pod1"] (remote-exec):     Masters:
-null_resource.install_pod["pod1"] (remote-exec):         * azure-tf-vms1-amit-pod1-vm / 10.0.2.21 / node
-null_resource.install_pod["pod1"] (remote-exec):             Status:            healthy
-null_resource.install_pod["pod1"] (remote-exec):             Remote access:     online
-null_resource.install_pod["pod1"] (remote-exec): NAME        STATUS   ROLES   AGE   VERSION
-null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   Ready    node    23m   v1.15.12
-null_resource.install_pod["pod1"] (remote-exec): NAME                                                    READY   STATUS      RESTARTS   AGE
-null_resource.install_pod["pod1"] (remote-exec): kube-metrics-adapter-6b967c7568-zc9fq                   1/1     Running     0          9m51s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-cargo-message-service-849876d44-c6xjs    1/1     Running     0          9m51s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-config-controller-8695f8d8d7-fh2nh       1/1     Running     0          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-connector-policy-76fc595f6d-vz8tw        3/3     Running     1          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-dlq-processor-1694552400-tgp6p           0/1     Completed   0          8m22s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-download-worker-7cc7569879-dbtbl         3/3     Running     1          9m51s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-elasticsearch-master-0                   1/1     Running     0          9m51s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-kafka-worker-6c4978dd76-2mx2v            1/1     Running     0          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-monitor-status-nwvlv                     1/1     Running     0          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-postgresql-0                             1/1     Running     0          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-qos-orchestrator-7d6dc5d598-r8c5g        1/1     Running     3          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-ranger-policy-service-7fb86894fb-c6jqf   1/1     Running     0          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-redis-master-0                           1/1     Running     0          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-redis-metrics-6bdd65c755-8przs           1/1     Running     0          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-redis-reaper-54cdbdf894-qstzx            1/1     Running     0          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-scheduler-7d8b8788c9-8nqmg               1/1     Running     2          9m52s
-null_resource.install_pod["pod1"] (remote-exec): priv-appliance-worker-d8b9f4c78-8xqpz                   1/1     Running     0          9m52s
-null_resource.install_pod["pod1"]: Creation complete after 16s [id=4512759690815130263]
+null_resource.install_pod["pod1"] (remote-exec): Installer Status: Completed on master
+null_resource.install_pod["pod1"] (remote-exec): NAME                         STATUS   ROLES                  AGE     VERSION
+null_resource.install_pod["pod1"] (remote-exec): azure-tf-vms1-amit-pod2-vm   Ready    <none>                 2m2s    v1.28.2+k3s1
+null_resource.install_pod["pod1"] (remote-exec): azure-tf-vms1-amit-pod1-vm   Ready    control-plane,master   3m16s   v1.28.2+k3s1
+null_resource.install_pod["pod1"] (remote-exec): NODE-IP     NAME                                                     STATUS
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.22   priv-appliance-prometheus-node-exporter-6knwg            Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.22   priv-appliance-monitor-status-24phl                      Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.22   priv-appliance-dlq-processor-28343160-r5trg              Succeeded
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-worker-8477c898bd-mlrpr                   Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-spark-operator-webhook-init-qhxql         Succeeded
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-scheduler-7bd7f655f5-kg9lk                Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-redis-reaper-569dc9d445-xkqw4             Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-redis-master-0                            Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-ranger-policy-service-6bb4cf8b44-6nwjs    Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-qos-orchestrator-58799497d5-wp2tb         Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-prometheus-server-56f6cfd864-pbxbf        Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-prometheus-pushgateway-7b8cf9df59-xnx25   Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-prometheus-node-exporter-whcfp            Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-postgresql-0                              Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-monitor-status-kdxpq                      Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-kafka-worker-7d74875b9d-q2cvd             Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-elasticsearch-master-0                    Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-connector-policy-557c657d88-wrbzj         Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-config-controller-84f974fd89-6d44b        Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   priv-appliance-cargo-message-service-b98fd497c-dbd4c     Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   metrics-server-67c658944b-fh5ct                          Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   local-path-provisioner-84db5d44d9-4s85b                  Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   kube-metrics-adapter-7d474c59b5-vtbgp                    Running
+null_resource.install_pod["pod1"] (remote-exec): 10.0.2.21   coredns-6799fbcd5-g4km9                                  Running
+null_resource.install_pod["pod1"] (remote-exec):      Active: active (running) since Tue 2023-11-21 17:58:26 UTC; 3min 32s ago
+null_resource.install_pod["pod1"]: Creation complete after 20s [id=5651385936831301419]
 ```
 
 ## EXTRAS: SAI appliance API shell scripts
