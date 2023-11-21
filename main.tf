@@ -180,7 +180,3 @@ output "az_resource_group" {
 output "ssh_credentials" {
   value = "${var.azuser}/${var.azpwd}"
 }
-
-output "delete_cmd" {
-  value = "tfda -var=delete_sai_appliance=true"
-}
