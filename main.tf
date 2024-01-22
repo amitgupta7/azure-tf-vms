@@ -40,7 +40,7 @@ resource "azurerm_network_security_group" "pod_sg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "*"
+    source_address_prefix      = "${var.client_ip}"
     destination_address_prefix = "*"
   }
 }

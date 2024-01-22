@@ -3,6 +3,12 @@ variable "az_subscription_id" {
   type        = string
 }
 
+variable "client_ip" {
+    description = "Optional, add the client public IP address to whitelist ssh communication"
+    default = "*"
+    type = string
+}
+
 variable "location" {
   default = "westus2"
 }

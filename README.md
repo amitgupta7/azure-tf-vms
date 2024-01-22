@@ -59,6 +59,9 @@ os_sku             = "87-gen2"
 azpwd              = "strongPwd"
 location           = "eastus2"
 vm_map             = {"pod1":{"private_ip_address":"10.0.2.21", role = "master"},"pod2":{"private_ip_address":"10.0.2.22", role = "worker"}, "pod3":{"private_ip_address":"10.0.2.23", role = "worker"}}
+client_ip    = "34.143.164.225"
+## for client_ip, use below comand to obtain the public IP address of the terraform/azcli/ssh client. 
+## dig TXT +short o-o.myaddr.l.google.com @ns1.google.com
 ```
 ## Output (IMPORTANT: please save)
 NOTE: The script will output the hostnames and mandatory parameters (for resource cleanup `tfda` command).
