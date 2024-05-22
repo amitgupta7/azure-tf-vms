@@ -15,9 +15,11 @@ NOTE: These are mac instructions (homebrew -> terraform --> azure cli). Provided
 brew install terraform
 ## install az cli with brew or pip
 brew install azure-cli
-## pip install azure-cli && echo PATH=\$PATH:\$HOME/.local/bin >> ~/.bashrc && bash -l 
+## curl -L https://aka.ms/InstallAzureCli | bash
+## echo PATH=\$PATH:\$HOME/bin >> ~/.bashrc && bash -l 
 $> az login --use-device-code
-## az group create ....
+## check login:
+## az account show -o jsonc
 ```
 ## To use the tfscript
 Clone `main` branch. Alternatively use [released packages](https://github.com/amitgupta7/azure-tf-vms/releases)
