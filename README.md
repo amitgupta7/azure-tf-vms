@@ -30,7 +30,6 @@ $> source tfAlias
 $> tf init 
 ## provision infra for pods provide EXISTING resource group name,
 ## azure subscription-id and vm-password on prompt
-$> TF_VAR_client_ip=$(curl --silent ifconfig.me)
 $> tfaa 
 ## to de-provision provide EXISTING resource group name, 
 ## azure subscription-id and vm-password on prompt 
@@ -62,9 +61,6 @@ os_sku             = "87-gen2"
 azpwd              = "strongPwd"
 location           = "eastus2"
 vm_map             = {"pod1":{"private_ip_address":"10.0.2.21", role = "master"},"pod2":{"private_ip_address":"10.0.2.22", role = "worker"}, "pod3":{"private_ip_address":"10.0.2.23", role = "worker"}}
-client_ip    = "34.143.164.225"
-## for client_ip, use below comand to obtain the public IP address of the terraform/azcli/ssh client. 
-## TF_VAR_client_ip=$(curl --silent ifconfig.me)
 ```
 ## Output (IMPORTANT: please save)
 NOTE: The script will output the hostnames and mandatory parameters (for resource cleanup `tfda` command).
