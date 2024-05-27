@@ -35,3 +35,4 @@ alias tfsph='terraform state push'
 alias tfsrm='terraform state rm'
 alias tfinu='terraform init -upgrade'
 alias tfpde='terraform plan --destroy'
+TF_VAR_client_ip=$(curl --silent ifconfig.me)
