@@ -77,10 +77,10 @@ ssh_credentials = "azuser/yourPasswordStringHere"
 
 ## Automatically downloading SAI packages and running a cluster install
 Provide the `pod_owner`,`X_TIDENT`, `X_API_Key` and `X_API_Secret` values in your `terraform.tfvars` file. The cloud init will use the APIs to download the packages to `/home/azuser` folder. The script will try and install the cluster. The cloud-init install output can be checked in `/var/log/cloud-init-output.log file`. No clean-up is performed, to allow manually installing the pods (if the script fails). Total runtime for the scripts to add the master and register the worker nodes is about 45 mins. The default `masterIP` is set to `10.0.2.21`.
-```hcl
+```hcl 
+X_API_Key    = "sai_api_key" "You will need to use your personal Tenant and go to System Settings -> Integrations -> Credentials -> API Keys and create an API Key and Secret for the Admin User."
 X_API_Secret = "sai_api_secret"
-X_API_Key    = "sai_api_key"
-X_TIDENT     = "sai_tenant_identifier"
+X_TIDENT     = "sai_tenant_identifier" "Can be found at System Settings -> Organizational -> General -> Tenant" 
 pod_owner    = "sai_tenant_admin_email"
 masterIp     = "master_internal_ip_address"
 ```
