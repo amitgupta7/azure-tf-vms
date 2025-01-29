@@ -190,8 +190,8 @@ The `create_sai_appliance.sh` shell script can be used to create an appliance an
 ```shell 
 $> cat sai_api_keys.env
 X_API_Secret="api-secret-here"
-X_API_Key="api-key-here"
-X_TIDENT="sai-tenantId-here"
+X_API_Key="api-key-here" "How-To Create API Key/Secret - https://docs.securiti.ai/modules/connectors/en/data-store-target/managing-credentials/managing-securiti-api-keys.html#UUID-e9d0ffe0-02fa-74c7-a145-338ec1e00b6c"
+X_TIDENT="sai-tenantId-here" "Can be found at System Settings -> Organizational -> General -> Tenant"
 $> mv sai_api_keys.env .env
 $> sh create_sai_appliance.sh
 {
